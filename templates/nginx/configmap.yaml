@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  {{- $root := . }}
+  {{- range tuple "web"}}
+  {{ . }}.conf: |
+    server {
+      listen 80;
+      server_name {{ index $root.Values . "domain" }};
+
+      root /var/www/{{ . }}/public;
+      index index.php;
+      rewrite ^/(.*)/$ /$1 permanent;
+
+      location / {
+        add_header Content-Encoding gzip;
+        try_files $uri /index.php?$query_string;
+      }
+
+      location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass {{ . }}:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+      }
+    }
+  {{- end }}
