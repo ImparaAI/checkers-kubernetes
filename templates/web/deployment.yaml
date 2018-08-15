@@ -40,5 +40,3 @@ spec:
       restartPolicy: Always
       imagePullSecrets:
       - name: regcred
-      nodeSelector:
-        app: web
