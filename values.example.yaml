@@ -7,3 +7,6 @@ web:
     APP_ENV: local
     APP_DEBUG: true
     APP_TIMEZONE: UTC
+
+prediction:
+  development_volume: /path/to/local/dir
