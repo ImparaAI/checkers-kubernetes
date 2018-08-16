@@ -1,18 +1,8 @@
 web:
-  domain: checkers.imparaai.dev
+  domain: checkers.imparaai.local
   secret:
     APP_KEY:
-    DB_HOST:
-    DB_PORT:
-    DB_CONNECTION:
-    DB_DATABASE:
-    DB_USERNAME:
-    DB_PASSWORD:
   safe:
-    APP_ENV:
-    APP_DEBUG:
-    APP_TIMEZONE:
-    LOG_CHANNEL:
-    LOG_SLACK_WEBHOOK_URL:
-    CACHE_DRIVER:
-    QUEUE_DRIVER:
+    APP_ENV: local
+    APP_DEBUG: true
+    APP_TIMEZONE: UTC
