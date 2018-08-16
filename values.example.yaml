@@ -1,4 +1,5 @@
 web:
+  development_volume: /path/to/local/dir
   domain: checkers.imparaai.local
   secret:
     APP_KEY:

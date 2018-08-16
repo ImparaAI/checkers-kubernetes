@@ -37,6 +37,15 @@ spec:
               name: web-config
           - secretRef:
               name: web-secrets
+      {{- if .Values.web.development_volume }}
+        volumeMounts:
+          - name: web
+            mountPath: /var/www/web
+      volumes:
+      - name: web
+        hostPath:
+          path: {{ .Values.web.development_volume }}
+      {{- end }}
       restartPolicy: Always
       imagePullSecrets:
       - name: regcred
