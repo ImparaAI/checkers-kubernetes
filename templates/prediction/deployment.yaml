@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: prediction
+  labels:
+    app: prediction
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: prediction
+    spec:
+      containers:
+      - name: prediction
+        image: imparaai/checkers-prediction
+        ports:
+        - containerPort: 80
+          name: http
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /var/healthy
+          initialDelaySeconds: 3
+          periodSeconds: 3
+      {{- if .Values.prediction.development_volume }}
+        volumeMounts:
+          - name: prediction
+            mountPath: /var/www/prediction
+      volumes:
+      - name: prediction
+        hostPath:
+          path: {{ .Values.prediction.development_volume }}
+      {{- end }}
+      restartPolicy: Always
