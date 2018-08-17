@@ -8,5 +8,9 @@ spec:
   ports:
   - port: 9000
     targetPort: php-fpm
+    name: php-fpm
+  - port: 80
+    targetPort: 80
+    name: http
   selector:
     app: web
