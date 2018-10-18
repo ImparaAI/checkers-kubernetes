@@ -9,3 +9,17 @@ Kubernetes configuration for running the checkers app environment.
 5. Ensure you have the domain you specified in your system's hosts file pointing at 127.0.0.1
 6. Run `helm dependency build` and `helm install .` from the root of this repo
 7. After a few moments, the app should be running at your domain
+
+# Running in gcloud
+
+If you already have gcloud on your system and have no problem switching kubeconfigs locally, you should just be able to follow the above instructions and deploy to a GKE cluster.
+
+If you want a slightly more isolated approach, you can head to the `/kubectl` directory where you have access to a container that has kubectl and gcloud already installed.
+
+1. Mount the local path to this repo in a `docker-compose.override.yaml` file.
+2. Run `docker-compose up -d` from that directory
+3. Run `docker exec -it kubectl bash` to get into the container
+4. Head over to `cd /var/kube`
+5. Run `gcloud init` and follow instructions
+6. Run `gcloud container clusters get-credentials production` (replacing `production` with GKE cluster name)
+7. Run any `kubectl` or `helm` command from `/var/kube` (where the repo code is)
