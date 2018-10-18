@@ -8,10 +8,10 @@ services:
     container_name: kubectl
     hostname: kubectl
     volumes:
-      - bashhistory:/root/bash
-      - kubeconfig:/root/.kube
-      - helmconfig:/root/.helm
-      - gcloudconfig:/root/.config/gcloud
+      - checkerskubebashhistory:/root/bash
+      - checkerskubeconfig:/root/.kube
+      - checkerskubehelmconfig:/root/.helm
+      - checkerskubegcloudconfig:/root/.config/gcloud
     volumes_from:
       - kubectldata
     ports:
@@ -19,11 +19,11 @@ services:
     environment:
       HISTFILE: "/root/bash/.bash_history"
 volumes:
-  bashhistory:
-    name: bashhistory
-  kubeconfig:
-    name: kubeconfig
-  gcloudconfig:
-    name: gcloudconfig
-  helmconfig:
-    name: helmconfig
+  checkerskubebashhistory:
+    name: checkerskubebashhistory
+  checkerskubeconfig:
+    name: checkerskubeconfig
+  checkerskubegcloudconfig:
+    name: checkerskubegcloudconfig
+  checkerskubehelmconfig:
+    name: checkerskubehelmconfig
