@@ -23,3 +23,20 @@ If you want a slightly more isolated approach, you can head to the `/kubectl` di
 5. Run `gcloud init` and follow instructions
 6. Run `gcloud container clusters get-credentials production` (replacing `production` with GKE cluster name)
 7. Run any `kubectl` or `helm` command from `/var/kube` (where the repo code is)
+
+## Setting up your cluster with a GPU
+
+When deploying to a cluster that has a GPU node pool, you'll need to follow the [Kubernetes instructions for scheduling GPUs](https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus). There are a few drivers you'll need to install:
+
+```
+# Install NVIDIA drivers on Container-Optimized OS:
+kubectl create -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/k8s-1.10/daemonset.yaml
+
+# Install NVIDIA drivers on Ubuntu (experimental):
+kubectl create -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/k8s-1.10/nvidia-driver-installer/ubuntu/daemonset.yaml
+
+# Install the device plugin:
+kubectl create -f https://raw.githubusercontent.com/kubernetes/kubernetes/release-1.10/cluster/addons/device-plugins/nvidia-gpu/daemonset.yaml
+```
+
+And then you can modify the `values.yaml` file to set `prediction.gpu` to `true`.

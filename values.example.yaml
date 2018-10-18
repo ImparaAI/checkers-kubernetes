@@ -10,3 +10,4 @@ web:
 
 prediction:
   development_volume: /path/to/local/dir
+  gpu: false

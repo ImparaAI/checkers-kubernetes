@@ -19,6 +19,11 @@ spec:
       containers:
       - name: prediction
         image: imparaai/checkers-prediction
+        {{- if .Values.prediction.gpu }}
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+        {{- end }}
         ports:
         - containerPort: 80
           name: http
