@@ -1,6 +1,7 @@
 web:
   development_volume: /path/to/local/dir
   domain: checkers.imparaai.local
+  https: false #true will generate an ssl cert from LetsEncrypt
   secret:
     APP_KEY:
   safe:

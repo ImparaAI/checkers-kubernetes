@@ -4,7 +4,17 @@ metadata:
   name: web
   annotations:
     kubernetes.io/ingress.class: "nginx"
+    {{- if .Values.web.https }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt-cluster-issuer
+    kubernetes.io/ingress.class: "nginx"
+    {{- end }}
 spec:
+  tls:
+  - hosts:
+    - {{ required "web.domain value required" .Values.web.domain }}
+    secretName: tls-checkers-web
   rules:
   - host: {{ required "web.domain value required" .Values.web.domain }}
     http:

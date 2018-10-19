@@ -12,7 +12,7 @@ Kubernetes configuration for running the checkers app environment.
 
 # Running in gcloud
 
-If you already have gcloud on your system and have no problem switching kubeconfigs locally, you should just be able to follow the above instructions and deploy to a GKE cluster.
+If you already have gcloud on your system and have no problem switching kubeconfigs locally, you should just be able to follow the above instructions and deploy to a GKE cluster. However, if you aren't familiar with gcloud roles and
 
 If you want a slightly more isolated approach, you can head to the `/kubectl` directory where you have access to a container that has kubectl and gcloud already installed.
 
@@ -20,9 +20,8 @@ If you want a slightly more isolated approach, you can head to the `/kubectl` di
 2. Run `docker-compose up -d` from that directory
 3. Run `docker exec -it kubectl bash` to get into the container
 4. Head over to `cd /var/kube`
-5. Run `gcloud init` and follow instructions
-6. Run `gcloud container clusters get-credentials production` (replacing `production` with GKE cluster name)
-7. Run any `kubectl` or `helm` command from `/var/kube` (where the repo code is)
+
+If you've already set up your gcloud values.yaml, you can run `./gcloud_install` from the root. Otherwise if you want to do it manually and get stuck, that file is a good place to start figuring out what is needed to get it all running.
 
 ## Setting up your cluster with a GPU
 
@@ -31,12 +30,6 @@ When deploying to a cluster that has a GPU node pool, you'll need to follow the 
 ```
 # Install NVIDIA drivers on Container-Optimized OS:
 kubectl create -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/k8s-1.10/daemonset.yaml
-
-# Install NVIDIA drivers on Ubuntu (experimental):
-kubectl create -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/k8s-1.10/nvidia-driver-installer/ubuntu/daemonset.yaml
-
-# Install the device plugin:
-kubectl create -f https://raw.githubusercontent.com/kubernetes/kubernetes/release-1.10/cluster/addons/device-plugins/nvidia-gpu/daemonset.yaml
 ```
 
 And then you can modify the `values.yaml` file to set `prediction.gpu` to `true`.
