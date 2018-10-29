@@ -5,7 +5,7 @@ metadata:
 spec:
   acme:
     email: jan@monger.com
-    server: https://acme-staging-v02.api.letsencrypt.org/directory #https://acme-v02.api.letsencrypt.org/directory #staging/test: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory #staging/test: https://acme-staging-v02.api.letsencrypt.org/directory
     http01: {}
     privateKeySecretRef:
       name: letsencrypt-staging
