@@ -16,12 +16,17 @@ echo "Making the current user an admin"
 kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)
 
 echo "Initializing helm. Follow along with the instructions"
-helm init --wait
+helm init --wait --tiller-tls-verify
 
 echo "Creating some roles for tiller"
 kubectl create serviceaccount --namespace kube-system tiller
 kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+
+read -p "Is this cluster running an Nvidia GPU? [y/n]" installdriver
+if [ $installdriver = "y" ]; then
+	kubectl create -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/k8s-1.10/daemonset.yaml
+done
 
 echo "Updating helm dependencies..."
 helm dependency build $basedir
