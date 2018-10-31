@@ -15,6 +15,16 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# kubectl helper functions
+kubexec() {
+	echo kubectl get pods | grep "$1" | cut -d ' ' -f 1
+	kubectl get pods | grep "$1" | cut -d ' ' -f 1 | xargs -I{} kubectl exec -it {} bash
+}
+
+kubelog() {
+	kubectl get pods | grep "$1" | cut -d ' ' -f 1 | xargs -I{} kubectl logs {}
+}
+
 # append to the history file, don't overwrite it
 shopt -s histappend
 shopt -s checkwinsize
