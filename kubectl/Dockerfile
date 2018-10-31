@@ -37,6 +37,7 @@ ENV PATH="/usr/local/gcloud/google-cloud-sdk/bin:${PATH}"
 
 # Install app
 COPY . /var/kube
+WORKDIR /var/kube
 
 EXPOSE 8001
 
