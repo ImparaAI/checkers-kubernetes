@@ -27,6 +27,9 @@ spec:
         ports:
         - containerPort: 80
           name: http
+        env:
+          - name: USE_GPU
+            value: {{ .Values.prediction.gpu | default "false" | quote}}
         readinessProbe:
           exec:
             command:
