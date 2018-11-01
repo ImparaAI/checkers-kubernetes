@@ -17,12 +17,23 @@ alias l='ls -CF'
 
 # kubectl helper functions
 kubexec() {
-	echo kubectl get pods | grep "$1" | cut -d ' ' -f 1
-	kubectl get pods | grep "$1" | cut -d ' ' -f 1 | xargs -I{} kubectl exec -it {} bash
+	podname=$(kubectl get pods | grep "$1" | cut -d ' ' -f 1)
+
+	if [ $podname ]; then
+		kubectl exec -it $podname bash
+	else
+		echo "No pod can be found with the string '$1'"
+	fi
 }
 
 kubelog() {
-	kubectl get pods | grep "$1" | cut -d ' ' -f 1 | xargs -I{} kubectl logs {}
+	podname=$(kubectl get pods | grep "$1" | cut -d ' ' -f 1)
+
+	if [ $podname ]; then
+		kubectl logs $podname
+	else
+		echo "No pod can be found with the string '$1'"
+	fi
 }
 
 # append to the history file, don't overwrite it
