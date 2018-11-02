@@ -18,7 +18,11 @@ spec:
     spec:
       containers:
       - name: prediction
-        image: imparaai/checkers-prediction
+        {{- if .Values.prediction.gpu }}
+        image: imparaai/checkers-prediction:gpu
+        {{- else }}
+        image: imparaai/checkers-prediction:cpu
+        {{- end }}
         {{- if .Values.prediction.gpu }}
         resources:
           limits:
