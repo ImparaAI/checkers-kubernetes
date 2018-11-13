@@ -23,13 +23,8 @@ If you want a slightly more isolated approach, you can head to the `/kubectl` di
 
 If you've already set up your gcloud values.yaml, you can run `./gcloud_install` from the root. Otherwise if you want to do it manually and get stuck, that file is a good place to start figuring out what is needed to get it all running.
 
-## Setting up your cluster with a GPU
+## Setting up your cluster with an Nvidia GPU
 
-When deploying to a cluster that has a GPU node pool, you'll need to follow the [Kubernetes instructions for scheduling GPUs](https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus). There are a few drivers you'll need to install:
+Modify the `values.yaml` file to set `prediction.nvidia_gpu` to `true`. Make
 
-```
-# Install NVIDIA drivers on Container-Optimized OS:
-kubectl create -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/k8s-1.10/daemonset.yaml
-```
-
-And then you can modify the `values.yaml` file to set `prediction.gpu` to `true`.
+If you're running `./gcloud_install`, that script will install the drivers for you. Otherwise, you should make sure you follow the [Kubernetes instructions for scheduling GPUs](https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus) to ensure the prediction container has access to the correct drivers and node pools.

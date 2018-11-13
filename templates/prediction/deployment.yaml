@@ -18,12 +18,12 @@ spec:
     spec:
       containers:
       - name: prediction
-        {{- if .Values.prediction.gpu }}
-        image: imparaai/checkers-prediction:gpu
+        {{- if .Values.prediction.nvidia_gpu }}
+        image: imparaai/checkers-prediction:nvidia
         {{- else }}
         image: imparaai/checkers-prediction:cpu
         {{- end }}
-        {{- if .Values.prediction.gpu }}
+        {{- if .Values.prediction.nvidia_gpu }}
         resources:
           limits:
             nvidia.com/gpu: 1
@@ -33,7 +33,7 @@ spec:
           name: http
         env:
           - name: USE_GPU
-            value: {{ .Values.prediction.gpu | default "false" | quote}}
+            value: {{ .Values.prediction.nvidia_gpu | default "false" | quote}}
         readinessProbe:
           exec:
             command:
