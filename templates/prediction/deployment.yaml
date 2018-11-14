@@ -23,6 +23,7 @@ spec:
         {{- else }}
         image: imparaai/checkers-prediction:cpu
         {{- end }}
+        imagePullPolicy: Always
         {{- if .Values.prediction.nvidia_gpu }}
         resources:
           limits:
