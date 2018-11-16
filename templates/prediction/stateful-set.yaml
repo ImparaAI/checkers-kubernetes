@@ -1,21 +1,21 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
   name: prediction
-  labels:
-    app: prediction
 spec:
+  selector:
+    matchLabels:
+      app: prediction
+  serviceName: prediction
   replicas: 1
-  strategy:
+  updateStrategy:
     type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 2
-      maxUnavailable: 0
   template:
     metadata:
       labels:
         app: prediction
     spec:
+      terminationGracePeriodSeconds: 5
       containers:
       - name: prediction
         {{- if .Values.prediction.nvidia_gpu }}
@@ -42,8 +42,17 @@ spec:
             - /var/healthy
           initialDelaySeconds: 3
           periodSeconds: 3
-      {{- if .Values.prediction.development_volume }}
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
         volumeMounts:
+          - name: sqlite-data
+            mountPath: /var/app/instance/sqlite
+      {{- if .Values.prediction.development_volume }}
           - name: prediction
             mountPath: /var/app
       volumes:
@@ -52,3 +61,11 @@ spec:
           path: {{ .Values.prediction.development_volume }}
       {{- end }}
       restartPolicy: Always
+  volumeClaimTemplates:
+  - metadata:
+      name: sqlite-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 50Mi
