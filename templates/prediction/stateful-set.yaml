@@ -28,6 +28,10 @@ spec:
         resources:
           limits:
             nvidia.com/gpu: 1
+        {{- else }}
+        resources:
+          requests:
+            cpu: 2
         {{- end }}
         ports:
         - containerPort: 80
