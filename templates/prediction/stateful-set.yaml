@@ -56,6 +56,8 @@ spec:
         volumeMounts:
           - name: sqlite-data
             mountPath: /var/app/instance/sqlite
+          - name: ai-model-data
+            mountPath: /var/app/app/model/checkers/data
       {{- if .Values.prediction.development_volume }}
           - name: prediction
             mountPath: /var/app
@@ -73,3 +75,10 @@ spec:
       resources:
         requests:
           storage: 50Mi
+  - metadata:
+      name: ai-model-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 500Mi
